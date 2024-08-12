@@ -96,7 +96,7 @@ const login = async (tipoUsuario, correo_electronico, contrasena) => {
     }
 };
 
-// Nueva función para verificar si el usuario ya existe usando procedimientos almacenados
+// Función para verificar si el usuario ya existe usando procedimientos almacenados
 const checkIfUserExists = async (correo_electronico, tipoUsuario) => {
     try {
         // Convertir tipoUsuario a minúsculas
@@ -119,14 +119,12 @@ const checkIfUserExists = async (correo_electronico, tipoUsuario) => {
         }
 
         // Ejecutar el procedimiento almacenado y obtener el valor del parámetro de salida
-        const result = await new Promise((resolve, reject) => {
-            query(procedure, [correo_electronico], (err, results) => {
-                if (err) reject(err);
-                else resolve(results[0][0].p_existe);
-            });
-        });
+        const result = await query(procedure, [correo_electronico]);
 
-        return result > 0; // Devuelve true si el usuario existe, false en caso contrario
+        // Obtener el valor del parámetro de salida
+        const exists = result[0][0].p_existe;
+
+        return exists > 0; // Devuelve true si el usuario existe, false en caso contrario
     } catch (err) {
         console.error('Error al verificar existencia del usuario:', err.message);
         throw new Error('Error al verificar existencia del usuario: ' + err.message);
