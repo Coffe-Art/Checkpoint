@@ -1,8 +1,9 @@
-const Producto = require('../models/productos');
-const upload = require('../config/uploadConfig'); // Ruta correcta a tu configuración de multer
 const express = require('express');
 const router = express.Router();
-const containerClient = require('../config/azureStorageConfig');
+const Producto = require('../models/productos');
+const path = require('path');
+const fs = require('fs');
+const createContainerClient = require('../config/azureStorageConfig'); // Importa la función async
 
 exports.createProducto = async (req, res) => {
     const { materiales, nombre, categoria, precio, descripcion, cantidad, publicadoPor, codigoempresa, idAdministrador } = req.body;
@@ -14,26 +15,25 @@ exports.createProducto = async (req, res) => {
             return res.status(400).json({ error: 'Nombre y precio son requeridos' });
         }
 
-        // Crear el producto en la base de datos
+        // Crear cliente de contenedor de manera asíncrona
+        const containerClient = await createContainerClient();
+
         Producto.create(materiales, nombre, categoria, precio, descripcion, urlProductoImg, cantidad, publicadoPor, codigoempresa, idAdministrador, async (err, result) => {
             if (err) {
                 console.error('Error al crear producto:', err);
                 return res.status(500).json({ error: 'Error interno del servidor' });
             }
 
-            // Subir la imagen a Azure Blob Storage si existe
             if (file) {
                 const blobName = file.filename;
                 const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
-                // Leer el archivo desde el disco
                 const filePath = path.join(__dirname, '..', 'uploads', file.filename);
                 const fileStream = fs.createReadStream(filePath);
 
                 try {
-                    // Subir archivo
                     await blockBlobClient.uploadStream(fileStream);
-                    fs.unlinkSync(filePath); // Eliminar archivo local
+                    fs.unlinkSync(filePath); // Eliminar archivo local después de subirlo
                 } catch (uploadErr) {
                     console.error('Error al subir archivo a Azure:', uploadErr);
                     return res.status(500).json({ error: 'Error al subir archivo a Azure Blob Storage' });
