@@ -8,7 +8,6 @@ const { promisify } = require('util');
 
 const query = promisify(pool.query).bind(pool);
 
-// Función para registrar un nuevo usuario
 const register = async (tipoUsuario, nombre, contrasena, correo_electronico, telefono, historia, estado, permisos, idAdministrador) => {
     try {
         // Convertir tipoUsuario a minúsculas
@@ -45,7 +44,6 @@ const register = async (tipoUsuario, nombre, contrasena, correo_electronico, tel
     }
 };
 
-// Función para iniciar sesión
 const login = async (tipoUsuario, correo_electronico, contrasena) => {
     try {
         // Convertir tipoUsuario a minúsculas
@@ -96,39 +94,4 @@ const login = async (tipoUsuario, correo_electronico, contrasena) => {
     }
 };
 
-// Función para verificar si el usuario ya existe usando procedimientos almacenados
-const checkIfUserExists = async (correo_electronico, tipoUsuario) => {
-    try {
-        // Convertir tipoUsuario a minúsculas
-        const tipoUsuarioLower = tipoUsuario.toLowerCase();
-
-        let procedure;
-
-        switch (tipoUsuarioLower) {
-            case 'administrador':
-                procedure = 'CALL ThisAdminExist(?, @p_existe)';
-                break;
-            case 'empleado':
-                procedure = 'CALL ThisEmployerExist(?, @p_existe)';
-                break;
-            case 'comprador':
-                procedure = 'CALL ThisBuyerExist(?, @p_existe)';
-                break;
-            default:
-                throw new Error('Tipo de usuario no válido');
-        }
-
-        // Ejecutar el procedimiento almacenado y obtener el valor del parámetro de salida
-        const result = await query(procedure, [correo_electronico]);
-
-        // Obtener el valor del parámetro de salida
-        const exists = result[0][0].p_existe;
-
-        return exists > 0; // Devuelve true si el usuario existe, false en caso contrario
-    } catch (err) {
-        console.error('Error al verificar existencia del usuario:', err.message);
-        throw new Error('Error al verificar existencia del usuario: ' + err.message);
-    }
-};
-
-module.exports = { register, login, checkIfUserExists };
+module.exports = { register, login };
