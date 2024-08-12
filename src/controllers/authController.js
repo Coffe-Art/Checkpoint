@@ -18,6 +18,41 @@ const register = async (req, res) => {
         // Convertir tipoUsuario a minúsculas
         const tipoUsuarioLower = tipoUsuario.toLowerCase();
 
+        // Verificar si el correo electrónico ya está en uso
+        let exists;
+        switch (tipoUsuarioLower) {
+            case 'administrador':
+                exists = await new Promise((resolve, reject) => {
+                    Administrador.checkIfExistsByEmail(correo_electronico, (err, exists) => {
+                        if (err) reject(err);
+                        else resolve(exists);
+                    });
+                });
+                break;
+            case 'empleado':
+                exists = await new Promise((resolve, reject) => {
+                    Empleado.checkIfExistsByEmail(correo_electronico, (err, exists) => {
+                        if (err) reject(err);
+                        else resolve(exists);
+                    });
+                });
+                break;
+            case 'comprador':
+                exists = await new Promise((resolve, reject) => {
+                    Comprador.checkIfExistsByEmail(correo_electronico, (err, exists) => {
+                        if (err) reject(err);
+                        else resolve(exists);
+                    });
+                });
+                break;
+            default:
+                return res.status(400).json({ error: 'Tipo de usuario no válido' });
+        }
+
+        if (exists) {
+            return res.status(400).json({ error: 'El correo electrónico ya está en uso' });
+        }
+
         // Hashear la contraseña
         const hashedPassword = await bcrypt.hash(contrasena, 10);
 

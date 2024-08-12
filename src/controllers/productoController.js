@@ -107,14 +107,31 @@ exports.updateProducto = (req, res) => {
 };
 
 // Controlador para eliminar un producto
-exports.deleteProducto = (req, res) => {
+exports.deleteProducto = async (req, res) => {
     const idProducto = req.params.idProducto;
 
-    Producto.delete(idProducto, (err) => {
-        if (err) {
-            console.error('Error al eliminar producto:', err);
-            return res.status(500).json({ error: 'Error interno del servidor' });
+    try {
+        // Primero obtén el producto para obtener la URL de la imagen
+        const producto = await Producto.findById(idProducto);
+        if (!producto) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
         }
+
+        // Eliminar el producto de la base de datos
+        await Producto.delete(idProducto);
+
+        // Si el producto tiene una imagen, elimínala de Azure Blob Storage
+        if (producto.urlProductoImg) {
+            const blobName = path.basename(producto.urlProductoImg);
+            const containerClient = await createContainerClient();
+            const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+            await blockBlobClient.delete();
+        }
+
         res.status(200).json({ message: 'Producto eliminado exitosamente' });
-    });
+    } catch (err) {
+        console.error('Error al eliminar producto:', err);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 };
+

@@ -17,6 +17,18 @@ const Comprador = {
     update: (idComprador, updates, callback) => {
         const query = 'CALL UpdateComprador(?, ?, ?, ?, ?)';
         db.query(query, [idComprador, updates.nombre, updates.contrasena, updates.telefono, updates.correo_electronico], callback);
+    },
+    // Nuevo método para verificar si el comprador existe por correo electrónico
+    checkIfExistsByEmail: (correo_electronico, callback) => {
+        const query = 'CALL ThisBuyerExist(?, @p_existe)';
+        db.query(query, [correo_electronico], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            // Obtener el valor del parámetro de salida
+            const result = results[0][0];
+            callback(null, result.p_existe);
+        });
     }
 };
 
