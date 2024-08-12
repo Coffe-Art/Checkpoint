@@ -9,7 +9,5 @@ router.post('/register', authController.register);
 // Ruta para el inicio de sesión de usuarios
 router.post('/login', authController.login);
 
-// Ruta para verificar si el usuario ya existe
-router.post('/checkIfUserExists', authController.checkIfUserExists);
 
 module.exports = router;
