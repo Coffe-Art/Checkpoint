@@ -106,10 +106,6 @@ exports.updateProducto = (req, res) => {
     });
 };
 
-// Controlador para eliminar un producto
-const path = require('path');
-
-// Controlador para eliminar un producto
 
 // Controlador para eliminar un producto
 exports.deleteProducto = async (req, res) => {
