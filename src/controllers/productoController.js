@@ -109,7 +109,6 @@ exports.updateProducto = (req, res) => {
 
 
 // Controlador para eliminar un producto
-avascript
 exports.deleteProducto = async (req, res) => {
     const idProducto = req.params.idProducto;
     console.log('ID del producto a eliminar:', idProducto);
