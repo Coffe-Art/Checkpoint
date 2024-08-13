@@ -107,29 +107,27 @@ exports.updateProducto = (req, res) => {
 };
 
 
+
 // Controlador para eliminar un producto
+avascript
 exports.deleteProducto = async (req, res) => {
     const idProducto = req.params.idProducto;
+    console.log('ID del producto a eliminar:', idProducto);
 
     try {
-        // Primero obtén el producto para obtener la URL de la imagen
         const producto = await Producto.findById(idProducto);
+        console.log('Producto encontrado:', producto);
+        
         if (!producto) {
             return res.status(404).json({ error: 'Producto no encontrado' });
         }
 
-        // Eliminar el producto de la base de datos
         await Producto.delete(idProducto);
 
-        // Si el producto tiene una imagen, elimínala de Azure Blob Storage
         if (producto.urlProductoImg) {
-            // Extrae solo el nombre del archivo
             const blobName = path.basename(producto.urlProductoImg);
-            
-            // Agrega un console.log para ver qué imagen se intenta borrar
             console.log(`Intentando borrar la imagen: ${blobName}`);
-
-            // Elimina el blob de Azure
+            
             const containerClient = await createContainerClient();
             const blockBlobClient = containerClient.getBlockBlobClient(blobName);
             await blockBlobClient.delete();
