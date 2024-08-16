@@ -7,6 +7,7 @@ const insumoRoutes = require('./src/routes/insumosRoutes');
 const productoRoutes = require('./src/routes/productosRoutes'); 
 const upload = require('./src/config/uploadConfig'); // Importar configuración de multer
 const eventoRoutes = require('./src/routes/eventoRoutes'); 
+const vistaCompradorRoutes = require('./src/routes/vistaCompradorRoutes')
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use('/api/empresa', empresaRoutes);
 app.use('/api/insumo', insumoRoutes); 
 app.use('/api/producto', productoRoutes); 
 app.use('/api/evento', eventoRoutes);
+app.use('/api/comprador', vistaCompradorRoutes);
 
 
 // Servir archivos estáticos
