@@ -1,10 +1,10 @@
-const Producto = require('../models/vistaComprador'); // Asegúrate de ajustar la ruta al modelo
+const vista = require('../models/vistaComprador'); // Asegúrate de ajustar la ruta al modelo
 
-const productoController = {};
+const vistaCompradorController = {};
 
 // Obtener todos los productos
-productoController.getAllProductos = (req, res) => {
-    Producto.getAll((err, results) => {
+vistaCompradorController.getAllProductos = (req, res) => {
+    vista.getAll((err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -13,8 +13,8 @@ productoController.getAllProductos = (req, res) => {
 };
 
 // Obtener todos los administradores
-productoController.getAllAdministradores = (req, res) => {
-    Producto.getAllAdministradores((err, results) => {
+vistaCompradorController.getAllAdministradores = (req, res) => {
+    vista.getAllAdministradores((err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -23,8 +23,8 @@ productoController.getAllAdministradores = (req, res) => {
 };
 
 // Obtener todas las empresas
-productoController.getAllEmpresas = (req, res) => {
-    Producto.getAllEmpresas((err, results) => {
+vistaCompradorController.getAllEmpresas = (req, res) => {
+    vista.getAllEmpresas((err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -33,8 +33,8 @@ productoController.getAllEmpresas = (req, res) => {
 };
 
 // Obtener todos los eventos
-productoController.getAllEventos = (req, res) => {
-    Producto.getAllEventos((err, results) => {
+vistaCompradorController.getAllEventos = (req, res) => {
+    vista.getAllEventos((err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -43,8 +43,8 @@ productoController.getAllEventos = (req, res) => {
 };
 
 // Obtener productos con su empresa y administrador asociados
-productoController.getProductosWithEmpresaAndAdministrador = (req, res) => {
-    Producto.getProductosWithEmpresaAndAdministrador((err, results) => {
+vistaCompradorController.getProductosWithEmpresaAndAdministrador = (req, res) => {
+    vista.getProductosWithEmpresaAndAdministrador((err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -53,9 +53,9 @@ productoController.getProductosWithEmpresaAndAdministrador = (req, res) => {
 };
 
 // Obtener productos por ID de empresa
-productoController.getProductosByEmpresaID = (req, res) => {
+vistaCompradorController.getProductosByEmpresaID = (req, res) => {
     const empresaID = req.params.empresaID;
-    Producto.getProductosByEmpresaID(empresaID, (err, results) => {
+    vista.getProductosByEmpresaID(empresaID, (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -64,9 +64,9 @@ productoController.getProductosByEmpresaID = (req, res) => {
 };
 
 // Obtener empresas por ID de administrador
-productoController.getEmpresasByAdministradorID = (req, res) => {
+vistaCompradorController.getEmpresasByAdministradorID = (req, res) => {
     const adminID = req.params.adminID;
-    Producto.getEmpresasByAdministradorID(adminID, (err, results) => {
+    vista.getEmpresasByAdministradorID(adminID, (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -75,9 +75,9 @@ productoController.getEmpresasByAdministradorID = (req, res) => {
 };
 
 // Obtener producto por ID
-productoController.getProductoByID = (req, res) => {
+vistaCompradorController.getProductoByID = (req, res) => {
     const productoID = req.params.productoID;
-    Producto.getProductoByID(productoID, (err, results) => {
+    vista.getProductoByID(productoID, (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -85,4 +85,27 @@ productoController.getProductoByID = (req, res) => {
     });
 };
 
-module.exports = productoController;
+// Consultar administrador por ID
+vistaCompradorController.getAdministradorByID = (req, res) => {
+    const adminID = req.params.adminID;
+    vista.getAdministradorByID(adminID, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(200).json(results);
+    });
+};
+
+// Consultar empresa por ID
+vistaCompradorController.getEmpresaByID = (req, res) => {
+    const empresaID = req.params.empresaID;
+    vista.getEmpresaByID(empresaID, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(200).json(results);
+    });
+};
+
+
+module.exports = vistaCompradorController;
