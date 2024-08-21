@@ -1,31 +1,27 @@
+// src/controllers/authController.js
 require('dotenv').config(); // Carga las variables de entorno
 const bcrypt = require('bcrypt');
 const Administrador = require('../models/administrador');
 const Comprador = require('../models/comprador');
 const Empleado = require('../models/empleado');
 const authService = require('../services/authService');
+const { sendEmail } = require('../services/emailService');
 
 const register = async (req, res) => {
     try {
         console.log("Register endpoint hit");
         const { tipoUsuario, nombre, contrasena, correo_electronico, telefono, historia, estado, permisos, idAdministrador } = req.body;
 
-        // Validación de datos
         if (!tipoUsuario || !nombre || !contrasena || !correo_electronico || !telefono) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
-        // Convertir tipoUsuario a minúsculas
         const tipoUsuarioLower = tipoUsuario.toLowerCase();
-
-        // Hashear la contraseña
         const hashedPassword = await bcrypt.hash(contrasena, 10);
 
-        // Verificar tipo de usuario y realizar el registro correspondiente
         let result;
         switch (tipoUsuarioLower) {
             case 'administrador':
-                // Verificar si el correo ya existe
                 const adminExists = await new Promise((resolve, reject) => {
                     Administrador.checkIfExistsByEmail(correo_electronico, (err, exists) => {
                         if (err) reject(err);
@@ -43,7 +39,6 @@ const register = async (req, res) => {
                 });
                 break;
             case 'empleado':
-                // Verificar si el correo ya existe
                 const empExists = await new Promise((resolve, reject) => {
                     Empleado.checkIfExistsByEmail(correo_electronico, (err, exists) => {
                         if (err) reject(err);
@@ -61,7 +56,6 @@ const register = async (req, res) => {
                 });
                 break;
             case 'comprador':
-                // Verificar si el correo ya existe
                 const buyerExists = await new Promise((resolve, reject) => {
                     Comprador.checkIfExistsByEmail(correo_electronico, (err, exists) => {
                         if (err) reject(err);
@@ -82,6 +76,13 @@ const register = async (req, res) => {
                 return res.status(400).json({ error: 'Tipo de usuario no válido' });
         }
 
+        // Enviar correo electrónico de bienvenida
+        await sendEmail(
+            correo_electronico,
+            'Bienvenido a CoffeArt',
+            `Hola ${nombre}, ¡Gracias por registrarte en CoffeArt!`
+        );
+
         res.status(201).json({ message: `${tipoUsuarioLower.charAt(0).toUpperCase() + tipoUsuarioLower.slice(1)} registrado con éxito` });
     } catch (err) {
         console.error('Error en el registro:', err.message);
@@ -89,20 +90,18 @@ const register = async (req, res) => {
     }
 };
 
+// Tu función de login queda igual
 const login = async (req, res) => {
     try {
         console.log("Login endpoint hit");
         const { tipoUsuario, correo_electronico, contrasena } = req.body;
 
-        // Validación de datos
         if (!tipoUsuario || !correo_electronico || !contrasena) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
-        // Convertir tipoUsuario a minúsculas
         const tipoUsuarioLower = tipoUsuario.toLowerCase();
 
-        // Asegúrate de que authService esté configurado para manejar el inicio de sesión
         const token = await authService.login(tipoUsuarioLower, correo_electronico, contrasena);
         res.json({ token });
     } catch (err) {
