@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const createContainerClient = require('../config/azureStorageConfig'); // Importa la función async
 
+// Controlador para crear un producto
 exports.createProducto = async (req, res) => {
     const { materiales, nombre, categoria, precio, descripcion, cantidad, publicadoPor, codigoempresa, idAdministrador } = req.body;
     const file = req.file;
@@ -95,17 +96,17 @@ exports.getProductosByCodigoEmpresa = (req, res) => {
 exports.updateProducto = (req, res) => {
     const idProducto = req.params.idProducto;
     const { materiales, nombre, categoria, precio, descripcion, cantidad, publicadoPor, codigoempresa, idAdministrador } = req.body;
-    const urlProductoImg = req.file ? `/uploads/${req.file.filename}` : null;
 
-    Producto.update(idProducto, materiales, nombre, categoria, precio, descripcion, urlProductoImg, cantidad, publicadoPor, codigoempresa, idAdministrador, (err, result) => {
+    Producto.update(idProducto, materiales, nombre, categoria, precio, descripcion, cantidad, publicadoPor, codigoempresa, idAdministrador, (err, result) => {
         if (err) {
             console.error('Error al actualizar producto:', err);
             return res.status(500).json({ error: 'Error interno del servidor' });
         }
-        res.status(200).json({ message: 'Producto actualizado exitosamente', urlProductoImg });
+        res.status(200).json({ message: 'Producto actualizado exitosamente' });
     });
 };
 
+// Controlador para eliminar un producto
 exports.deleteProducto = async (req, res) => {
     const idProducto = req.params.idProducto;
 

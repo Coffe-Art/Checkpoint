@@ -28,9 +28,9 @@ Producto.findByCodigoEmpresa = (codigoempresa, callback) => {
 };
 
 // Actualizar producto
-Producto.update = (idProducto, materiales, nombre, categoria, precio, descripcion, urlProductoImg, cantidad, publicadoPor, codigoempresa, idAdministrador, callback) => {
-    const query = `CALL UpdateProducto(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const values = [idProducto, materiales, nombre, categoria, precio, descripcion, urlProductoImg, cantidad, publicadoPor, codigoempresa, idAdministrador];
+Producto.update = (idProducto, materiales, nombre, categoria, precio, descripcion, cantidad, publicadoPor, codigoempresa, idAdministrador, callback) => {
+    const query = `CALL UpdateProducto(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const values = [idProducto, materiales, nombre, categoria, precio, descripcion, cantidad, publicadoPor, codigoempresa, idAdministrador];
     db.query(query, values, callback);
 };
 
