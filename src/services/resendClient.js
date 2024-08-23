@@ -1,8 +1,8 @@
 // src/services/resendClient.js
-const Resend = require('resend');
+require('dotenv').config();
+const { Resend } = require('resend'); // Import Resend class from 'resend'
 
-const resend = new Resend({
-  apiKey: 'rnd_uc1oNSkCxKkCUuTOSbifwxl9UFE6', // Asegúrate de configurar esta variable en tu archivo .env
-});
+// Initialize Resend client with the API key from environment variables
+const resend = new Resend('rnd_uc1oNSkCxKkCUuTOSbifwxl9UFE6'); 
 
 module.exports = resend;
