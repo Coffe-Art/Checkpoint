@@ -1,16 +1,18 @@
+
+
 require('dotenv').config();
 const { EmailClient } = require('@azure/communication-email');
 
-const connectionString = 'endpoint=https://coffeartemails.unitedstates.communication.azure.com/;accesskey=6UFo5dwqZrtlXmSuZMFRBjwFNo8YgjMiH5EUNWoD5QEKNctFHKpVJQQJ99AHACULyCps5mg0AAAAAZCSOs7T';
+const connectionString =  'endpoint=https://coffeartemails.unitedstates.communication.azure.com/;accesskey=6UFo5dwqZrtlXmSuZMFRBjwFNo8YgjMiH5EUNWoD5QEKNctFHKpVJQQJ99AHACULyCps5mg0AAAAAZCSOs7T'; // Usa variables de entorno
 const emailClient = new EmailClient(connectionString);
 
-const sendEmail = async (to) => {
+const sendEmail = async (to, subject, htmlContent) => {
     const message = {
-        senderAddress: 'DoNotReply@0b3ff4b4-b1e8-4be9-987d-d149c4a490c9.azurecomm.net',
+        senderAddress: process.env.SENDER_EMAIL_ADDRESS, // Usa una variable de entorno para la dirección del remitente
         content: {
-            subject: 'Correo electrónico de prueba',
-            html: '<html><h1>Hola mundo por correo electrónico.</h1></html>',
-            plainText: 'Hola mundo por correo electrónico',
+            subject: subject,
+            html: htmlContent,
+            plainText: htmlContent.replace(/<\/?[^>]+>/gi, ''), // Extrae texto plano del HTML
         },
         recipients: {
             to: [{ email: to }],
@@ -28,3 +30,4 @@ const sendEmail = async (to) => {
 };
 
 module.exports = { sendEmail };
+

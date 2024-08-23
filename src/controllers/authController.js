@@ -80,7 +80,7 @@ const register = async (req, res) => {
         await sendEmail(
             correo_electronico,
             'Bienvenido a CoffeArt',
-            `Hola ${nombre}, ¡Gracias por registrarte en CoffeArt!`
+            `<html><h1>Hola ${nombre}, ¡Gracias por registrarte en CoffeArt!</h1></html>`
         );
 
         res.status(201).json({ message: `${tipoUsuarioLower.charAt(0).toUpperCase() + tipoUsuarioLower.slice(1)} registrado con éxito` });
