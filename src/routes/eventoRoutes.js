@@ -8,6 +8,9 @@ router.post('/', eventoController.createEvento);
 // Ruta para obtener todos los eventos
 router.get('/', eventoController.getAllEventos);
 
+// Ruta para obtener eventos por idAdministrador
+router.get('/admin/:idAdministrador', eventoController.getEventosPorAdministrador);
+
 // Ruta para obtener un evento por ID
 router.get('/:idEvento', eventoController.getEventoById);
 

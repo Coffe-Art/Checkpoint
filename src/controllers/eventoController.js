@@ -2,8 +2,8 @@ const Evento = require('../models/evento');
 
 // Controlador para crear un evento
 exports.createEvento = (req, res) => {
-  const { nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion } = req.body;
-  Evento.createEvento(nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion, (err, result) => {
+  const { nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion, idAdministrador } = req.body;
+  Evento.createEvento(nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion, idAdministrador,  (err, result) => {
     if (err) {
       console.error('Error al crear evento:', err);
       res.status(500).json({ error: 'Error interno del servidor' });
@@ -68,3 +68,18 @@ exports.deleteEvento = (req, res) => {
     }
   });
 };
+
+// Controlador para obtener eventos por ID de administrador
+// Controlador para obtener eventos por ID de administrador
+exports.getEventosPorAdministrador = (req, res) => {
+  const idAdministrador = req.params.idAdministrador;
+  Evento.getEventosPorAdministrador(idAdministrador, (err, eventos) => {
+    if (err) {
+      console.error('Error al obtener eventos por administrador:', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    } else {
+      res.status(200).json(eventos);
+    }
+  });
+};
+

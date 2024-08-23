@@ -1,9 +1,9 @@
 const pool = require('../utils/db'); // Asegúrate de que esta ruta sea correcta
 
 // Función para crear un evento
-const createEvento = (nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion, callback) => {
-  pool.query('CALL CrearEvento(?, ?, ?, ?, ?, ?, ?)', 
-    [nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion],
+const createEvento = (nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion, idAdministrador, callback) => {
+  pool.query('CALL CrearEvento(?, ?, ?, ?, ?, ?, ?, ?)', 
+    [nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion, idAdministrador],
     (err, results) => {
       if (err) {
         return callback(err, null);
@@ -12,6 +12,7 @@ const createEvento = (nombreEvento, fecha, ubicacion, empresasAsistente, duracio
     }
   );
 };
+
 
 // Función para obtener todos los eventos
 const getAllEventos = (callback) => {
@@ -56,10 +57,21 @@ const deleteEvento = (idEvento, callback) => {
   });
 };
 
+// Función para obtener eventos por ID de administrador
+const getEventosPorAdministrador = (idAdministrador, callback) => {
+  pool.query('CALL ObtenerEventosPorAdministrador(?)', [idAdministrador], (err, results) => {
+    if (err) {
+      return callback(err, null);
+    }
+    callback(null, results[0]); // Ajusta según la estructura de tu resultado
+  });
+};
+
 module.exports = {
   createEvento,
   getAllEventos,
   getEventoById,
   updateEvento,
-  deleteEvento
+  deleteEvento,
+  getEventosPorAdministrador
 };
