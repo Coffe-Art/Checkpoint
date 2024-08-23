@@ -1,11 +1,10 @@
-// src/controllers/authController.js
 require('dotenv').config(); // Carga las variables de entorno
 const bcrypt = require('bcrypt');
 const Administrador = require('../models/administrador');
 const Comprador = require('../models/comprador');
 const Empleado = require('../models/empleado');
 const authService = require('../services/authService');
-const { sendEmail } = require('../services/emailService');
+const { sendEmail } = require('../services/emailService'); // Importa el servicio de correo
 
 const register = async (req, res) => {
     try {
@@ -90,7 +89,7 @@ const register = async (req, res) => {
     }
 };
 
-// Tu función de login queda igual
+
 const login = async (req, res) => {
     try {
         console.log("Login endpoint hit");
