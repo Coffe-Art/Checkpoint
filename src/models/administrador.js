@@ -19,18 +19,7 @@ const Administrador = {
         const query = 'CALL UpdateAdministrador(?, ?, ?, ?, ?, ?)';
         db.query(query, [idadministrador, updates.nombre, updates.historia, updates.contrasena, updates.correo_electronico, updates.telefono], callback);
     },
-    // Nuevo método para verificar si el administrador existe por correo electrónico
-    checkIfExistsByEmail: (correo_electronico, callback) => {
-        const query = 'CALL ThisAdminExist(?, @p_existe)';
-        db.query(query, [correo_electronico], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            // Obtener el valor del parámetro de salida
-            const result = results[0][0];
-            callback(null, result.p_existe);
-        });
-    }
+    
 };
 
 module.exports = Administrador;
