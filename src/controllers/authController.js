@@ -5,18 +5,18 @@ const Administrador = require('../models/administrador');
 const Comprador = require('../models/comprador');
 const Empleado = require('../models/empleado');
 const authService = require('../services/authService');
-const resend = require('../services/resendClient'); // Importa el cliente de Resend
+const { sendEmail } = require('../services/emailService');
 
 const sendRegistrationEmail = async (email, name, userType) => {
   try {
-    await resend.emails.create({
-      to: email,
-      subject: `Welcome to our service, ${name}!`,
-      body: `Hi ${name},\n\nThank you for registering as a ${userType}. We are excited to have you on board!\n\nBest regards,\nYour Company`,
-    });
-    console.log(`Registration email sent to ${email}`);
+    const subject = `Cuenta Creada: Bienvenido a Coffe Art`;
+    const text = `Hola ${name},\n\nGracias por registrarte como ${userType} en Coffe Art.`;
+    const html = `<b>Hola ${name},</b><br><br>Gracias por registrarte como ${userType} en Coffe Art.`;
+    
+    await sendEmail(email, subject, text, html);
+    console.log(`Correo de registro enviado a ${email}`);
   } catch (error) {
-    console.error('Error sending registration email:', error);
+    console.error('Error enviando el correo de registro:', error);
   }
 };
 
@@ -89,7 +89,7 @@ const register = async (req, res) => {
         return res.status(400).json({ error: 'Tipo de usuario no válido' });
     }
 
-    // Envía el correo de bienvenida
+    // Enviar correo de registro después de la creación exitosa del usuario
     await sendRegistrationEmail(correo_electronico, nombre, tipoUsuarioLower);
 
     res.status(201).json({ message: `${tipoUsuarioLower.charAt(0).toUpperCase() + tipoUsuarioLower.slice(1)} registrado con éxito` });
