@@ -4,7 +4,7 @@ const Administrador = require('../models/administrador');
 const Comprador = require('../models/comprador');
 const Empleado = require('../models/empleado');
 const authService = require('../services/authService');
-const { sendEmail } = require('../services/emailService'); // Importar la función de envío de correos
+const { sendEmail } = require('../services/emailVef'); // Importar la función de envío de correos
 
 const register = async (req, res) => {
     try {
