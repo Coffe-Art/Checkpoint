@@ -5,7 +5,7 @@ const Administrador = require('../models/administrador');
 const Comprador = require('../models/comprador');
 const Empleado = require('../models/empleado');
 const authService = require('../services/authService');
-const { sendEmail } = require('../services/emailService');
+const { sendEmail } = require('../services/emailVef');
 
 const sendRegistrationEmail = async (email, name, userType) => {
   try {
