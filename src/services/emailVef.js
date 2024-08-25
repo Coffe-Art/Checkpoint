@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
   secure: false, // true para 465, false para otros puertos
   auth: {
     user: 'coffeart224@gmail.com', // Usar variable de entorno
-    pass: 'Adso2696224' // Usar variable de entorno
+    pass: 'adso2696224' // Usar variable de entorno
   }
 });
 
