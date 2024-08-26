@@ -86,7 +86,7 @@ const login = async (tipoUsuario, correo_electronico, contrasena) => {
         }
 
         // Generar un token JWT si la autenticación es exitosa
-        const token = jwt.sign({ id: user[idField], tipoUsuario: tipoUsuarioLower }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user[idField], tipoUsuario: tipoUsuarioLower }, process.env.JWT_SECRET, { expiresIn: '4h' });
         return token;
     } catch (err) {
         console.error('Error en el login:', err.message);
