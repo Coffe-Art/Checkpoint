@@ -2,10 +2,10 @@ const Insumo = require('../models/insumos');
 
 // Controlador para crear un nuevo insumo
 exports.createInsumo = (req, res) => {
-    const { Nombre, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, IdUsuario } = req.body;
-    console.log('Datos recibidos:', Nombre, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, IdUsuario);
+    const { Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa } = req.body;
+    console.log('Datos recibidos:', Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa);
 
-    Insumo.create(Nombre, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, IdUsuario, (err, result) => {
+    Insumo.create(Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa, (err, result) => {
         if (err) {
             console.error('Error al crear insumo:', err);
             res.status(500).json({ error: 'Error interno del servidor' });
@@ -35,9 +35,9 @@ exports.getInsumo = (req, res) => {
 // Controlador para actualizar un insumo existente
 exports.updateInsumo = (req, res) => {
     const idInsumo = req.params.idInsumo;
-    const { Nombre, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, IdUsuario } = req.body;
+    const { Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa } = req.body;
 
-    Insumo.update(idInsumo, Nombre, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, IdUsuario, (err, result) => {
+    Insumo.update(idInsumo, Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa, (err, result) => {
         if (err) {
             console.error('Error al actualizar insumo:', err);
             res.status(500).json({ error: 'Error interno del servidor' });
@@ -62,8 +62,8 @@ exports.deleteInsumo = (req, res) => {
 
 // Controlador para obtener todos los insumos de una empresa específica
 exports.getInsumosByEmpresa = (req, res) => {
-    const codigoempresa = req.params.codigoempresa;
-    Insumo.findByEmpresa(codigoempresa, (err, insumos) => {
+    const codigoEmpresa = req.params.codigoEmpresa;
+    Insumo.findByEmpresa(codigoEmpresa, (err, insumos) => {
         if (err) {
             console.error('Error al obtener insumos:', err);
             res.status(500).json({ error: 'Error interno del servidor' });
