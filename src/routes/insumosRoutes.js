@@ -3,36 +3,20 @@ const express = require('express');
 const router = express.Router();
 const insumoController = require('../controllers/insumoController');
 
-console.log('Registering insumo routes');
-
 // Ruta para crear un nuevo insumo
-router.post('/nuevoInsumo', (req, res) => {
-    console.log('POST /nuevoInsumo');
-    insumoController.createInsumo(req, res);
-});
+router.post('/nuevoInsumo', insumoController.createInsumo);
 
 // Ruta para obtener detalles de un insumo específico
-router.get('/consultar/:idInsumo', (req, res) => {
-    console.log('GET /consultar/:idInsumo');
-    insumoController.getInsumo(req, res);
-});
+router.get('/consultar/:idInsumo', insumoController.getInsumo);
 
 // Ruta para actualizar un insumo existente
-router.put('/actualizar/:idInsumo', (req, res) => {
-    console.log('PUT /actualizar/:idInsumo');
-    insumoController.updateInsumo(req, res);
-});
+router.put('/actualizar/:idInsumo', insumoController.updateInsumo);
 
 // Ruta para eliminar un insumo
-router.delete('/eliminar/:idInsumo', (req, res) => {
-    console.log('DELETE /eliminar/:idInsumo');
-    insumoController.deleteInsumo(req, res);
-});
+router.delete('/eliminar/:idInsumo', insumoController.deleteInsumo);
 
 // Ruta para obtener todos los insumos de una empresa específica
-router.get('/insumosPorEmpresa/:codigoempresa', (req, res) => {
-    console.log('GET /insumosPorEmpresa/:codigoempresa');
-    insumoController.getInsumosByEmpresa(req, res);
-});
+router.get('/insumosPorEmpresa/:codigoEmpresa', insumoController.getInsumosByEmpresa);
 
 module.exports = router;
+
