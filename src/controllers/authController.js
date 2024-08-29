@@ -58,114 +58,106 @@ const register = async (req, res) => {
         const text = `Hola ${nombre},\n\nGracias por registrarte como ${tipoUsuarioLower} en Coffe Art.`;
         const html = `
             <!DOCTYPE html>
-            <html lang="es">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Bienvenido a Coffe Art</title>
-                <style>
-                    body {
-                        background-color: #ffffff;
-                        font-family: Arial, sans-serif;
-                        margin: 0;
-                        padding: 0;
-                    }
-                    .container {
-                        max-width: 600px;
-                        margin: 0 auto;
-                        background-color: #ffffff;
-                        padding: 20px;
-                        border-radius: 8px;
-                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                    }
-                    .header {
-                        text-align: center;
-                        background-image: url('https://imagenes224.blob.core.windows.net/imagenes224/FondoMenu.png');
-                        padding: 20px;
-                        border-radius: 8px 8px 0 0;
-                    }
-                    .header img {
-                        max-width: 100px;
-                        margin-bottom: 20px;
-                    }
-                    .header h1 {
-                        color: #ffffff;
-                        font-size: 24px;
-                        margin: 0;
-                    }
-                    .content {
-                        padding: 20px;
-                        text-align: center;
-                    }
-                    .content h2 {
-                        color: #333333;
-                        font-size: 2rem;
-                    }
-                    .content p {
-                        color: #555555;
-                        line-height: 1.5;
-                        font-size: 1.2rem;
-                    }
-                    .link-button  {
-                        margin-top: 2rem;
-                        margin-bottom: 2rem;
-                        display: flex;
-                        justify-content: center;
-                        justify-self: center;
-                        
-                    }
-                    .link-button button  {
-                        padding: 0.5rem;
-                        border-radius: 3rem;
-                        border: none;
-                        background-color: #B89158;
-                        
-                    }
-                    .link-button button:hover  {
-                        background-color: #F1BF76;
-                    }
-                    .link-button a  {
-                        text-decoration: none;
-                        color: white;
-                        font-size: medium;
-                    }
-                    .footer {
-                        text-align: center;
-                        padding: 20px;
-                        background-color: #271d25;
-                        color: #ffffff;
-                        border-radius: 0 0 8px 8px;
-                    }
-                    .footer a {
-                        color: #ffffff;
-                        text-decoration: none;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <div class="header">
-                        <img src="https://imagenes224.blob.core.windows.net/imagenes224/logoCA.webp" alt="Coffe Art Logo">
-                        <h1>Bienvenido a Coffe Art</h1>
-                    </div>
-                    <div class="content">
-                        <h2>Hola ${nombre},</h2>
-                        <p>Gracias por registrarte como <strong>${tipoUsuarioLower}</strong> en Coffe Art.</p>
-                        <p>Estamos emocionados de tenerte con nosotros. ¡Esperamos que disfrutes de todos nuestros servicios y productos!</p>
-                        <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
-                    </div>
-                    
-                    <div class="link-button">
-                        <button><p><a href="https://www.coffeart.com">Visita nuestra página web</a></p></button>
-                    </div>
-                    
-
-                    <div class="footer">
-                        <p>&copy; 2024 Coffe Art. Todos los derechos reservados.</p>
-                    </div>
-                </div>
-            </body>
-            </html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a Coffe Art</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            background-image: url('https://imagenes224.blob.core.windows.net/imagenes224/FondoMenu.png');
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .header img {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #ffffff;
+            font-size: 24px;
+            margin: 0;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .content h2 {
+            color: #333333;
+            font-size: 2rem;
+        }
+        .content p {
+            color: #555555;
+            line-height: 1.5;
+            font-size: 1.2rem;
+        }
+        .link-button {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            text-align: center; /* Centra el contenido */
+        }
+        .link-button a {
+            display: inline-block; /* Asegura que el enlace se comporte como un bloque en línea */
+            padding: 0.75rem 1.5rem;
+            border-radius: 3rem;
+            border: none;
+            background-color: #B89158;
+            color: white;
+            text-decoration: none;
+            font-size: medium;
+        }
+        .link-button a:hover {
+            background-color: #F1BF76;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #271d25;
+            color: #ffffff;
+            border-radius: 0 0 8px 8px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://imagenes224.blob.core.windows.net/imagenes224/logoCA.webp" alt="Coffe Art Logo">
+            <h1>Bienvenido a Coffe Art</h1>
+        </div>
+        <div class="content">
+            <h2>Hola ${nombre},</h2>
+            <p>Gracias por registrarte como <strong>${tipoUsuarioLower}</strong> en Coffe Art.</p>
+            <p>Estamos emocionados de tenerte con nosotros. ¡Esperamos que disfrutes de todos nuestros servicios y productos!</p>
+            <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+        </div>
+        <div class="link-button">
+            <a href="https://www.coffeart.com">Visita nuestra página web</a>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 Coffe Art. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>
             `;
     await sendEmail(correo_electronico, subject, text, html);
 
