@@ -1,10 +1,10 @@
-require('dotenv').config(); // Carga las variables de entorno
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const Administrador = require('../models/administrador');
 const Comprador = require('../models/comprador');
 const Empleado = require('../models/empleado');
 const authService = require('../services/authService');
-const { sendEmail } = require('../services/emailVef'); // Importar la función de envío de correos
+const { sendEmail } = require('../services/emailVef');
 
 const register = async (req, res) => {
     try {
@@ -168,18 +168,15 @@ const register = async (req, res) => {
     }
 };
 
-// Función de login
 const login = async (req, res) => {
     try {
         console.log("Login endpoint hit");
         const { tipoUsuario, correo_electronico, contrasena } = req.body;
 
-        if (!tipoUsuario || !correo_electronico || !contrasena) {
-            return res.status(400).json({ error: 'Todos los campos son obligatorios' });
-        }
-
+        // Convertir tipoUsuario a minúsculas
         const tipoUsuarioLower = tipoUsuario.toLowerCase();
 
+        // Asegúrate de que authService esté configurado para manejar el inicio de sesión
         const token = await authService.login(tipoUsuarioLower, correo_electronico, contrasena);
         res.json({ token });
     } catch (err) {
@@ -188,4 +185,173 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { register, login };
+// Función de solicitud de restablecimiento de contraseña
+const generateVerificationCode = () => {
+    // Genera un código de verificación de 6 dígitos
+    return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+const requestPasswordReset = async (req, res) => {
+    try {
+        const { tipoUsuario, correo_electronico } = req.body;
+
+        if (!tipoUsuario || !correo_electronico) {
+            return res.status(400).json({ type: 'error', message: 'Todos los campos son obligatorios' });
+        }
+
+        const tipoUsuarioLower = tipoUsuario.toLowerCase();
+        let userModel;
+
+        switch (tipoUsuarioLower) {
+            case 'administrador':
+                userModel = Administrador;
+                break;
+            case 'empleado':
+                userModel = Empleado;
+                break;
+            case 'comprador':
+                userModel = Comprador;
+                break;
+            default:
+                return res.status(400).json({ type: 'error', message: 'Tipo de usuario no válido' });
+        }
+
+        const verificationCode = generateVerificationCode(); // Genera un código de 6 dígitos
+        const expiration = new Date(Date.now() + 15 * 60 * 1000); // 15 minutos de expiración
+
+        await new Promise((resolve, reject) => {
+            userModel.updateResetToken(correo_electronico, verificationCode, expiration, (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+
+        // Envía el código por correo
+        const subject = 'Código de verificación para restablecimiento de contraseña';
+        const text = `Hola, tu código de verificación es: ${verificationCode}. Este código expirará en 15 minutos.`;
+        const html = `<b>Hola, tu código de verificación es: ${verificationCode}</b><br><br>Este código expirará en 15 minutos.`;
+
+        await sendEmail(correo_electronico, subject, text, html);
+
+        res.status(200).json({ type: 'success', message: 'Código de verificación enviado con éxito' });
+    } catch (err) {
+        console.error('Error al solicitar restablecimiento de contraseña:', err.message);
+        res.status(500).json({ type: 'error', message: err.message });
+    }
+};
+const verifyCode = async (req, res) => {
+    try {
+        const { tipoUsuario, correo_electronico, verificationCode } = req.body;
+
+        if (!tipoUsuario || !correo_electronico || !verificationCode) {
+            return res.status(400).json({ type: 'error', message: 'Todos los campos son obligatorios' });
+        }
+
+        const tipoUsuarioLower = tipoUsuario.toLowerCase();
+        let userModel;
+
+        switch (tipoUsuarioLower) {
+            case 'administrador':
+                userModel = Administrador;
+                break;
+            case 'empleado':
+                userModel = Empleado;
+                break;
+            case 'comprador':
+                userModel = Comprador;
+                break;
+            default:
+                return res.status(400).json({ type: 'error', message: 'Tipo de usuario no válido' });
+        }
+
+        const user = await new Promise((resolve, reject) => {
+            userModel.findByResetToken(verificationCode, (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+        });
+
+        if (!user) {
+            return res.status(400).json({ type: 'error', message: 'Código de verificación no válido' });
+        }
+
+        if (new Date() > user.resetTokenExpiration) {
+            return res.status(400).json({ type: 'error', message: 'El código ha expirado' });
+        }
+
+        res.status(200).json({ type: 'success', message: 'Código verificado con éxito' });
+    } catch (err) {
+        console.error('Error en la verificación del código:', err.message);
+        res.status(500).json({ type: 'error', message: err.message });
+    }
+};
+
+
+// Función para restablecer la contraseña
+const resetPassword = async (req, res) => {
+    try {
+        // Extrae los campos del cuerpo de la solicitud
+        const { tipoUsuario, correo_electronico, verificationCode, nuevaContrasena } = req.body;
+
+        // Verifica que todos los campos estén presentes
+        if (!tipoUsuario || !correo_electronico || !verificationCode || !nuevaContrasena) {
+            return res.status(400).json({ type: 'error', message: 'Todos los campos son obligatorios' });
+        }
+
+        // Selecciona el modelo de usuario adecuado según el tipoUsuario
+        const tipoUsuarioLower = tipoUsuario.toLowerCase();
+        let userModel;
+
+        switch (tipoUsuarioLower) {
+            case 'administrador':
+                userModel = Administrador;
+                break;
+            case 'empleado':
+                userModel = Empleado;
+                break;
+            case 'comprador':
+                userModel = Comprador;
+                break;
+            default:
+                return res.status(400).json({ type: 'error', message: 'Tipo de usuario no válido' });
+        }
+
+        // Busca el usuario por el código de verificación
+        const user = await new Promise((resolve, reject) => {
+            userModel.findByResetToken(verificationCode, (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+        });
+
+        // Verifica si el código de verificación es válido
+        if (!user) {
+            return res.status(400).json({ type: 'error', message: 'Código de verificación no válido o ha expirado' });
+        }
+
+        // Verifica si el código ha expirado
+        if (new Date() > user.resetTokenExpiration) {
+            return res.status(400).json({ type: 'error', message: 'El código ha expirado' });
+        }
+
+        // Hash de la nueva contraseña
+        const hashedPassword = await bcrypt.hash(nuevaContrasena, 10);
+
+        // Actualiza la contraseña del usuario
+        await new Promise((resolve, reject) => {
+            userModel.resetPassword(correo_electronico, hashedPassword, (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+
+        // Responde con éxito
+        res.status(200).json({ type: 'success', message: 'Contraseña restablecida con éxito' });
+    } catch (err) {
+        console.error('Error en el restablecimiento de contraseña:', err.message);
+        res.status(500).json({ type: 'error', message: err.message });
+    }
+};
+
+
+module.exports = { register, login, requestPasswordReset, resetPassword, verifyCode };

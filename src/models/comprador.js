@@ -1,4 +1,3 @@
-// src/models/comprador.js
 const db = require('../utils/db');
 
 const Comprador = {
@@ -18,17 +17,31 @@ const Comprador = {
         const query = 'CALL UpdateComprador(?, ?, ?, ?, ?)';
         db.query(query, [idComprador, updates.nombre, updates.contrasena, updates.telefono, updates.correo_electronico], callback);
     },
-    // Nuevo método para verificar si el comprador existe por correo electrónico
     checkIfExistsByEmail: (correo_electronico, callback) => {
         const query = 'CALL ThisBuyerExist(?, @p_existe)';
         db.query(query, [correo_electronico], (err, results) => {
             if (err) {
                 return callback(err);
             }
-            // Obtener el valor del parámetro de salida
             const result = results[0][0];
             callback(null, result.p_existe);
         });
+    },
+    findByEmail: (correo_electronico, callback) => {
+        const query = 'SELECT * FROM comprador WHERE correo_electronico = ?';
+        db.query(query, [correo_electronico], callback);
+    },
+    updateResetToken: (correo_electronico, token, expiration, callback) => {
+        const query = 'UPDATE comprador SET resetToken = ?, resetTokenExpiration = ? WHERE correo_electronico = ?';
+        db.query(query, [token, expiration, correo_electronico], callback);
+    },
+    findByResetToken: (token, callback) => {
+        const query = 'SELECT * FROM comprador WHERE resetToken = ? AND resetTokenExpiration > NOW()';
+        db.query(query, [token], callback);
+    },
+    resetPassword: (correo_electronico, newPassword, callback) => {
+        const query = 'UPDATE comprador SET contrasena = ?, resetToken = NULL, resetTokenExpiration = NULL WHERE correo_electronico = ?';
+        db.query(query, [newPassword, correo_electronico], callback);
     }
 };
 
