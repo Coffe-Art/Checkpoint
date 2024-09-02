@@ -107,5 +107,15 @@ vistaCompradorController.getEmpresaByID = (req, res) => {
     });
 };
 
+// Obtener empresa y administrador por ID de empresa
+vistaCompradorController.getEmpresaConAdministrador = (req, res) => {
+    const empresaID = req.params.empresaID;
+    vista.getEmpresaConAdministrador(empresaID, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(200).json(results);
+    });
+};
 
 module.exports = vistaCompradorController;

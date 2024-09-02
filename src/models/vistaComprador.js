@@ -62,4 +62,10 @@ vistaComprador.getEmpresaByID = (empresaID, callback) => {
     db.query(query, [empresaID], callback);
 };
 
+// Obtener empresa y administrador por ID de empresa
+vistaComprador.getEmpresaConAdministrador = (empresaID, callback) => {
+    const query = `CALL GetEmpresaConAdministrador(?)`;
+    db.query(query, [empresaID], callback);
+};
+
 module.exports = vistaComprador;
