@@ -1,6 +1,6 @@
 const Insumo = require('../models/insumos');
 
-const db = require('../db'); // Asegúrate de que la conexión a la base de datos está configurada correctamente
+
 
 exports.create = (Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa, idAdministrador, callback) => {
     // Imprime los datos para asegurarte de que se están pasando correctamente
