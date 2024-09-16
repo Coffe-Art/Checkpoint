@@ -33,7 +33,3 @@ const Insumo = {
 };
 
 module.exports = Insumo;
-
-        }
-    });
-};
