@@ -1,28 +1,17 @@
 const Insumo = require('../models/insumos');
 
+// Controlador para crear un nuevo insumo
+exports.createInsumo = (req, res) => {
+    const { Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa, idAdministrador } = req.body;
+    console.log('Datos recibidos:', Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa, idAdministrador);
 
-
-exports.create = (Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa, idAdministrador, callback) => {
-    // Imprime los datos para asegurarte de que se están pasando correctamente
-    console.log('Datos en el modelo:', { Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa, idAdministrador });
-
-    // Definir la consulta y los valores
-    const query = 'CALL CreateInsumo(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    const values = [Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa, idAdministrador];
-
-    // Ejecutar la consulta
-    db.query(query, values, (err, results) => {
+    Insumo.create(Nombre, cantidadInsumo, precioUnitario, precioPorKilo, descripcion, lugarDeVenta, correoContacto, TelefonoContacto, TipoDeVenta, codigoEmpresa, idAdministrador, (err, result) => {
         if (err) {
-            console.error('Error al llamar al procedimiento almacenado:', err);
-            return callback(err, null);
+            console.error('Error al crear insumo:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+        } else {
+            res.status(201).json({ message: 'Insumo creado exitosamente', id: result.insertId });
         }
-
-        // Verificar el formato de los resultados
-        console.log('Resultados del procedimiento almacenado:', results);
-
-        // El resultado puede variar dependiendo de la base de datos y el procedimiento almacenado
-        // Si estás usando MySQL, el primer elemento de 'results' puede contener los resultados del procedimiento almacenado
-        callback(null, results[0]);
     });
 };
 
