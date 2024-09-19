@@ -11,7 +11,7 @@ function createPool() {
     port: 3306,
     waitForConnections: true,
     connectTimeout: 10000,
-    connectionLimit: 35,
+    connectionLimit: 5, 
     queueLimit: 0
   });
 
@@ -40,3 +40,4 @@ function createPool() {
 createPool();
 
 module.exports = pool;
+
