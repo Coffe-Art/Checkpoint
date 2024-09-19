@@ -70,6 +70,7 @@ exports.deleteEvento = (req, res) => {
 };
 
 // Controlador para obtener eventos por ID de administrador
+// Controlador para obtener eventos por ID de administrador
 exports.getEventosPorAdministrador = (req, res) => {
   const idAdministrador = req.params.idAdministrador;
   Evento.getEventosPorAdministrador(idAdministrador, (err, eventos) => {

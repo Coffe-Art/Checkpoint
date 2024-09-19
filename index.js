@@ -9,8 +9,8 @@ const upload = require('./src/config/uploadConfig'); // Importar configuración 
 const eventoRoutes = require('./src/routes/eventoRoutes'); 
 const vistaCompradorRoutes = require('./src/routes/vistaCompradorRoutes')
 const paymentRoutes = require('./src/routes/paymentRoutes')
-const profilesRoutes = require('./src/routes/profilesRoutes')
-
+const reporteRoutes = require('./src/routes/reporteRoutes');
+const reportesProductoRoutes = require('./src/routes/reportesProducto');
 
 
 const app = express();
@@ -44,7 +44,8 @@ app.use('/api/producto', productoRoutes);
 app.use('/api/evento', eventoRoutes);
 app.use('/api/comprador', vistaCompradorRoutes);
 app.use('/api/payment', paymentRoutes);
-app.use('/api/profiles', profilesRoutes);
+app.use('/api', reporteRoutes);
+app.use('/api', reportesProductoRoutes);
 
 // Servir archivos estáticos
 app.use('/uploads', express.static('uploads'));

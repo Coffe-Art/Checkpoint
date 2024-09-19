@@ -6,7 +6,7 @@ exports.reportEmpresa = async (req, res) => {
 
     // Validar los datos recibidos
     if (!codigoempresa || !motivo) {
-        return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+        return res.status(400).json({ error: 'Escriba el motivo' });
     }
 
     // Llamar a la función del modelo para crear el reporte

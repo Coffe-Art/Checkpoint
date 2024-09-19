@@ -63,7 +63,7 @@ const login = async (tipoUsuario, correo_electronico, contrasena) => {
                 break;
             case 'comprador':
                 table = 'comprador';
-                idField = 'idComprador';
+                idField = 'idcomprador';
                 break;
             default:
                 throw new Error('Tipo de usuario no válido');

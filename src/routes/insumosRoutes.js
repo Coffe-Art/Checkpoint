@@ -18,5 +18,7 @@ router.delete('/eliminar/:idInsumo', insumoController.deleteInsumo);
 // Ruta para obtener todos los insumos de una empresa específica
 router.get('/insumosPorEmpresa/:codigoEmpresa', insumoController.getInsumosByEmpresa);
 
-module.exports = router;
+// Ruta para obtener todos los insumos de un administrador específico
+router.get('/insumosPorAdministrador/:idAdministrador', insumoController.getInsumosByAdministrador);
 
+module.exports = router;
