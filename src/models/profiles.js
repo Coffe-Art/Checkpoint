@@ -7,12 +7,10 @@ const Profiles = {
         db.query(query, [idadministrador], callback);
     },
     updateAdministrador: (idadministrador, updates, callback) => {
-        const query = 'CALL UpdateAdministrador(?, ?, ?, ?, ?, ?)';
+        const query = 'CALL UpdateAdministrador(?, ?, ?, ?)';
         db.query(query, [
             idadministrador,
             updates.nombre,
-            updates.historia || null,
-            updates.contrasena,
             updates.correo_electronico,
             updates.telefono
         ], callback);
@@ -24,13 +22,12 @@ const Profiles = {
         db.query(query, [idComprador], callback);
     },
     updateComprador: (idComprador, updates, callback) => {
-        const query = 'CALL UpdateComprador(?, ?, ?, ?, ?)';
+        const query = 'CALL UpdateComprador(?, ?, ?, ?)';
         db.query(query, [
             idComprador,
             updates.nombre,
-            updates.contrasena,
-            updates.telefono,
-            updates.correo_electronico
+            updates.correo_electronico,
+            updates.telefono
         ], callback);
     }
 };

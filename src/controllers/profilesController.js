@@ -17,9 +17,14 @@ const getAdministradorById = (req, res) => {
 
 const updateAdministrador = (req, res) => {
     const { idadministrador } = req.params;
-    const updates = req.body;
+    const { nombre, correo_electronico, telefono } = req.body;
 
-    Profiles.updateAdministrador(idadministrador, updates, (err, result) => {
+    // Verificar si todos los campos necesarios están presentes
+    if (!nombre || !correo_electronico || !telefono) {
+        return res.status(400).json({ error: 'Faltan datos requeridos' });
+    }
+
+    Profiles.updateAdministrador(idadministrador, { nombre, correo_electronico, telefono }, (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Error al actualizar Administrador' });
         }
@@ -44,9 +49,14 @@ const getCompradorById = (req, res) => {
 
 const updateComprador = (req, res) => {
     const { idComprador } = req.params;
-    const updates = req.body;
+    const { nombre, correo_electronico, telefono } = req.body;
 
-    Profiles.updateComprador(idComprador, updates, (err, result) => {
+    // Verificar si todos los campos necesarios están presentes
+    if (!nombre || !correo_electronico || !telefono) {
+        return res.status(400).json({ error: 'Faltan datos requeridos' });
+    }
+
+    Profiles.updateComprador(idComprador, { nombre, correo_electronico, telefono }, (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Error al actualizar Comprador' });
         }
