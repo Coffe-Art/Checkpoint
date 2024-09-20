@@ -150,7 +150,7 @@ const register = async (req, res) => {
             <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
         </div>
         <div class="link-button">
-            <a href="https://expo-expo-one.vercel.app/signin">Visita nuestra página web</a>
+            <a href="https://front-exp-zr6h.vercel.app/">Visita nuestra página web</a>
         </div>
         <div class="footer">
             <p>&copy; 2024 Coffe Art. Todos los derechos reservados.</p>
