@@ -11,6 +11,8 @@ const vistaCompradorRoutes = require('./src/routes/vistaCompradorRoutes')
 const paymentRoutes = require('./src/routes/paymentRoutes')
 const reporteRoutes = require('./src/routes/reporteRoutes');
 const reportesProductoRoutes = require('./src/routes/reportesProducto');
+const profileRoutes = require('./src/routes/profilesRoutes');
+
 
 
 const app = express();
@@ -43,6 +45,7 @@ app.use('/api/insumo', insumoRoutes);
 app.use('/api/producto', productoRoutes); 
 app.use('/api/evento', eventoRoutes);
 app.use('/api/comprador', vistaCompradorRoutes);
+app.use('/api/profiles', profileRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api', reporteRoutes);
 app.use('/api', reportesProductoRoutes);
