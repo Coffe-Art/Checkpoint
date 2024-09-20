@@ -46,6 +46,11 @@ exports.getEventoById = (req, res) => {
 exports.updateEvento = (req, res) => {
   const idEvento = req.params.idEvento;
   const { nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion } = req.body;
+
+  if (!idEvento || !nombreEvento || !ubicacion || !empresasAsistente || !duracion || !lugar || !descripcion) {
+    return res.status(400).json({ error: 'Faltan datos necesarios para actualizar el evento' });
+  }
+
   Evento.updateEvento(idEvento, nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion, (err, result) => {
     if (err) {
       console.error('Error al actualizar evento:', err);
@@ -70,7 +75,6 @@ exports.deleteEvento = (req, res) => {
 };
 
 // Controlador para obtener eventos por ID de administrador
-// Controlador para obtener eventos por ID de administrador
 exports.getEventosPorAdministrador = (req, res) => {
   const idAdministrador = req.params.idAdministrador;
   Evento.getEventosPorAdministrador(idAdministrador, (err, eventos) => {
@@ -82,4 +86,6 @@ exports.getEventosPorAdministrador = (req, res) => {
     }
   });
 };
+
+
 
