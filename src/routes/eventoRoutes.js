@@ -15,7 +15,7 @@ router.get('/admin/:idAdministrador', eventoController.getEventosPorAdministrado
 router.get('/:idEvento', eventoController.getEventoById);
 
 // Ruta para actualizar un evento
-router.put('update/:idEvento', eventoController.updateEvento);
+router.put('/update/:idEvento', eventoController.updateEvento);
 
 // Ruta para eliminar un evento
 router.delete('/:idEvento', eventoController.deleteEvento);
