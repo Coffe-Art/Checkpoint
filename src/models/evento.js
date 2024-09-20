@@ -34,10 +34,11 @@ const getEventoById = (idEvento, callback) => {
   });
 };
 
-// Función para actualizar un evento
 const updateEvento = (idEvento, nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion, callback) => {
+  const fechaToUse = fecha || null; 
+
   pool.query('CALL ActualizarEvento(?, ?, ?, ?, ?, ?, ?, ?)', 
-    [idEvento, nombreEvento, fecha, ubicacion, empresasAsistente, duracion, lugar, descripcion],
+    [idEvento, nombreEvento, fechaToUse, ubicacion, empresasAsistente, duracion, lugar, descripcion],
     (err, results) => {
       if (err) {
         return callback(err, null);
