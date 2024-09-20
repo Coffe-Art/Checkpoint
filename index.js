@@ -12,6 +12,7 @@ const paymentRoutes = require('./src/routes/paymentRoutes')
 const reporteRoutes = require('./src/routes/reporteRoutes');
 const reportesProductoRoutes = require('./src/routes/reportesProducto');
 const profileRoutes = require('./src/routes/profilesRoutes');
+const salesRoutes = require('./src/routes/salesRoutes');
 
 
 
@@ -49,7 +50,7 @@ app.use('/api/profiles', profileRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api', reporteRoutes);
 app.use('/api', reportesProductoRoutes);
-
+app.use('/api/admin', salesRoutes)
 // Servir archivos estáticos
 app.use('/uploads', express.static('uploads'));
 
